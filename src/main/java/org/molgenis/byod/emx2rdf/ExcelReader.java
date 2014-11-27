@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,57 +19,72 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
- *
+ * 
  * @author David van Enckevort <david@allthingsdigital.nl>
  */
-public class ExcelReader implements Iterator<Map<String, String>> {
+public class ExcelReader implements Iterator<Map<String, String>>
+{
 
-    private final Sheet dataset;
-    private final Sheet organisations;
-    private final Sheet persons;
-    private final Workbook wb;
-    private String[] headers;
-    private int rowNum;
+	private final Sheet dataset;
+	private final Sheet organisations;
+	private final Sheet persons;
+	private final Workbook wb;
+	private String[] headers;
+	private int rowNum;
 
-    public ExcelReader(final Path location) throws IOException, InvalidFormatException {
+	public ExcelReader(final Path location) throws IOException, InvalidFormatException
+	{
 
-        wb = WorkbookFactory.create(location.toFile());
-        dataset = wb.getSheet("decode_cocos_20140601");
-        organisations = wb.getSheet("decode_organisations");
-        persons = wb.getSheet("decode_persons");
-        Row row = dataset.getRow(0);
-        headers = new String[row.getLastCellNum()];
-        rowNum = 1;
-        for (int cellNum = row.getFirstCellNum(); cellNum <= row.getLastCellNum(); cellNum++) {
-            Cell cell = row.getCell(cellNum);
-            if (cell == null || cell.getCellType() != Cell.CELL_TYPE_STRING) {
-                break;
-            }
-            headers[cellNum] = cell.getStringCellValue();
-        }
-    }
+		wb = WorkbookFactory.create(location.toFile());
+		dataset = wb.getSheet("decode_cocos_20140601");
+		organisations = wb.getSheet("decode_organisations");
+		persons = wb.getSheet("decode_persons");
+		Row row = dataset.getRow(0);
+		headers = new String[row.getLastCellNum()];
+		rowNum = 1;
+		for (int cellNum = row.getFirstCellNum(); cellNum <= row.getLastCellNum(); cellNum++)
+		{
+			Cell cell = row.getCell(cellNum);
+			if (cell == null || cell.getCellType() != Cell.CELL_TYPE_STRING)
+			{
+				break;
+			}
+			headers[cellNum] = cell.getStringCellValue();
+		}
+	}
 
-    @Override
-    public boolean hasNext() {
-        return rowNum <= dataset.getLastRowNum();
-    }
+	@Override
+	public boolean hasNext()
+	{
+		return rowNum <= dataset.getLastRowNum();
+	}
 
-    @Override
-    public Map<String, String> next() {
-        Map<String, String> result = new HashMap<>();
-        Row row = dataset.getRow(rowNum);
-        rowNum++;
-        for (int cellNum = 0; cellNum < headers.length; cellNum++) {
-            Cell cell = row.getCell(cellNum);
-            switch (cell.getCellType()) {
-                case Cell.CELL_TYPE_STRING:
-                    result.put(headers[cellNum], row.getCell(cellNum).getStringCellValue());
-                    break;
-                case Cell.CELL_TYPE_NUMERIC:
-                    double value = cell.getNumericCellValue();
-                    result.put(headers[cellNum], String.valueOf(value));
-            }
-        }
-        return result;
-    }
+	@Override
+	public Map<String, String> next()
+	{
+		Map<String, String> result = new HashMap<>();
+		Row row = dataset.getRow(rowNum);
+		rowNum++;
+		for (int cellNum = 0; cellNum < headers.length; cellNum++)
+		{
+			Cell cell = row.getCell(cellNum);
+			switch (cell.getCellType())
+			{
+				case Cell.CELL_TYPE_STRING:
+					result.put(headers[cellNum], row.getCell(cellNum).getStringCellValue());
+					break;
+				case Cell.CELL_TYPE_NUMERIC:
+					double value = cell.getNumericCellValue();
+					result.put(headers[cellNum], String.valueOf(value));
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void remove()
+	{
+		// TODO Auto-generated method stub
+
+	}
 }
