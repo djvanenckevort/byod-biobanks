@@ -27,13 +27,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-
 /**
  *
  * @author David van Enckevort <david@allthingsdigital.nl>
  */
 @Component
 public class CommandLineConverter implements CommandLineRunner {
+
     @Value("${in:in.xlsx}")
     private String infile;
 
@@ -51,14 +51,19 @@ public class CommandLineConverter implements CommandLineRunner {
 
         exportOrganisation(model);
         exportSampleCoordinator(model);
-        exportDataset(model);
+        for (String dataset : strings) {
+            if (!dataset.startsWith("--")) {
+                System.err.println("processing " + dataset);
+                exportDataset(model, dataset);
+            }
+        }
         model.close();
         modelMaker.close();
     }
 
-    private void exportDataset(Model model) throws IOException, InvalidFormatException {
+    private void exportDataset(Model model, String dataset) throws IOException, InvalidFormatException {
         RdfExporter rdfExporter = new RdfExporter();
-        ExcelReader reader = new ExcelReader(Paths.get(infile), "decode_cocos_20140601");
+        ExcelReader reader = new ExcelReader(Paths.get(infile), dataset);
         Set<List<Statement>> participants = new HashSet<>();
         Set<List<Statement>> collections = new HashSet<>();
         while (reader.hasNext()) {
