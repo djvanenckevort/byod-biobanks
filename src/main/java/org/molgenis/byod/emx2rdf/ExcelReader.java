@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,10 +19,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
- *
+ * 
  * @author David van Enckevort <david@allthingsdigital.nl>
  */
-public class ExcelReader implements Iterator<Map<String, String>> {
+public class ExcelReader implements Iterator<Map<String, String>>
+{
 
     private final Sheet dataset;
 //    private final Sheet organisations;
@@ -30,7 +32,8 @@ public class ExcelReader implements Iterator<Map<String, String>> {
     private String[] headers;
     private int rowNum;
 
-    public ExcelReader(final Path location) throws IOException, InvalidFormatException {
+	public ExcelReader(final Path location) throws IOException, InvalidFormatException
+	{
 
         wb = WorkbookFactory.create(location.toFile());
         dataset = wb.getSheet("decode_cocos_20140601");
@@ -48,10 +51,11 @@ public class ExcelReader implements Iterator<Map<String, String>> {
         }
     }
 
-    @Override
-    public boolean hasNext() {
-        return rowNum <= dataset.getLastRowNum();
-    }
+	@Override
+	public boolean hasNext()
+	{
+		return rowNum <= dataset.getLastRowNum();
+	}
 
     @Override
     public Map<String, String> next() {
