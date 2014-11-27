@@ -17,6 +17,7 @@ public class RdfExporter {
 
     public final static String CATALOG_PARTICIPANT_ID_PREFIX = "http://ctmm-trait.nl/participants/";
     public final static String ORGANIZATION_PREFIX = "http://ctmm-trait.nl/organisation/";
+    public final static String COORDINATOR_PREFIX = "http://ctmm-trait.nl/samplecoordinator/";
     public final static String SAMPLE_PREFIX = "http://ctmm-trait.nl/sample/";
     public final static String SAMPLE_COLLECTIONS_PREFIX = "http://ctmm-trait.nl/samplecollections/";
     public final static String OMIABIS_PREFIX = "http://purl.obolibrary.org/obo/";

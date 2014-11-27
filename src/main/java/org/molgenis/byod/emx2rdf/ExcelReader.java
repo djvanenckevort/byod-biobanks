@@ -19,26 +19,20 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
- * 
+ *
  * @author David van Enckevort <david@allthingsdigital.nl>
  */
-public class ExcelReader implements Iterator<Map<String, String>>
-{
+public class ExcelReader implements Iterator<Map<String, String>> {
 
     private final Sheet dataset;
-//    private final Sheet organisations;
-//    private final Sheet persons;
     private final Workbook wb;
     private String[] headers;
     private int rowNum;
 
-	public ExcelReader(final Path location) throws IOException, InvalidFormatException
-	{
+    public ExcelReader(final Path location, String datasheet) throws IOException, InvalidFormatException {
 
         wb = WorkbookFactory.create(location.toFile());
-        dataset = wb.getSheet("decode_cocos_20140601");
-//        organisations = wb.getSheet("decode_organisations");
-//        persons = wb.getSheet("decode_persons");
+        dataset = wb.getSheet(datasheet);
         Row row = dataset.getRow(0);
         headers = new String[row.getLastCellNum()];
         rowNum = 1;
@@ -51,11 +45,10 @@ public class ExcelReader implements Iterator<Map<String, String>>
         }
     }
 
-	@Override
-	public boolean hasNext()
-	{
-		return rowNum <= dataset.getLastRowNum();
-	}
+    @Override
+    public boolean hasNext() {
+        return rowNum <= dataset.getLastRowNum();
+    }
 
     @Override
     public Map<String, String> next() {
@@ -66,30 +59,15 @@ public class ExcelReader implements Iterator<Map<String, String>>
             Cell cell = row.getCell(cellNum);
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_STRING:
-                    if ("organisation".equals(headers[cellNum])) {
-                        addOrganisation(result);
-                    } else if ("".equals(headers[cellNum])) {
-                        addPerson(result);
-                    } else {
-                        result.put(headers[cellNum], row.getCell(cellNum).getStringCellValue());
-                    }
+                    result.put(headers[cellNum], row.getCell(cellNum).getStringCellValue());
 
                     break;
                 case Cell.CELL_TYPE_NUMERIC:
-                    result.put(headers[cellNum], String.valueOf(cell.getNumericCellValue()));
+                    String value = String.format("%1.0f", cell.getNumericCellValue());
+                    result.put(headers[cellNum], value);
+                    break;
             }
         }
         return result;
-    }
-
-    private void addOrganisation(Map<String,String> map) {
-        map.put("organisationName", "VUmc");
-        map.put("homepageUrl", "http://www.vumc.nl/");
-    }
-
-    private void addPerson(Map<String, String> map) {
-        map.put("fullName", "Gerrit Meijer");
-        map.put("emailAddress", "ga.meijer@vumc.nl");
-        map.put("phone", "020-4444852");
     }
 }

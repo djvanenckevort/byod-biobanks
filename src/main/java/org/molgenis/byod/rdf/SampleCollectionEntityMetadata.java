@@ -1,63 +1,84 @@
 package org.molgenis.byod.rdf;
-//package org.rdconnect;
-//
-//import java.util.HashMap;
-//import java.util.Map;
-//
-//import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
-//import com.hp.hpl.jena.rdf.model.Property;
-//import com.hp.hpl.jena.sparql.vocabulary.FOAF;
-//import com.hp.hpl.jena.vocabulary.DCTerms;
-//import com.hp.hpl.jena.vocabulary.RDFS;
-//
-//public class SampleCollectionEntityMetadata implements MetaData
-//{
-//	public static final String SAMPLECOLLECTIONID = "participantID";
-//	public static final String DIAGNOSIS_CODE = "diagnosis_code";
-//	public static final String ETHNICITY = "ethnicity";
-//	public static final String GENDER = "gender";
-//
-//	private Map<String, String> attributeToOntologyUri;
-//	{
-//		attributeToOntologyUri = new HashMap<String, String>();
-//		attributeToOntologyUri.put(DIAGNOSIS_CODE, RdfExporter.NCI_PREFIX);
-//		attributeToOntologyUri.put(PARTICIPANT_ID, RdfExporter.CATALOG_PARTICIPANT_ID_PREFIX);
-//	}
-//
-//	private Map<String, Property> attributeProperty;
-//	{
-//		attributeProperty = new HashMap<String, Property>();
-//		attributeProperty.put(DIAGNOSIS_CODE, RDFS.seeAlso);
-//		attributeProperty.put(ETHNICITY, DCTerms.identifier);
-//		attributeProperty.put(GENDER, FOAF.gender);
-//	}
-//
-//	private Map<String, XSDDatatype> attrToDataType;
-//	{
-//		attrToDataType = new HashMap<String, XSDDatatype>();
-//		attrToDataType.put(PARTICIPANT_ID, XSDDatatype.XSDstring);
-//		attrToDataType.put(DIAGNOSIS_CODE, XSDDatatype.XSDstring);
-//		attrToDataType.put(ETHNICITY, XSDDatatype.XSDstring);
-//		attrToDataType.put(GENDER, XSDDatatype.XSDstring);
-//	}
-//
-//	public XSDDatatype getDataType(String attributeName)
-//	{
-//		return attrToDataType.containsKey(attributeName) ? attrToDataType.get(attributeName) : XSDDatatype.XSDstring;
-//	}
-//
-//	public String getOntologyPrefix(String attributeName)
-//	{
-//		return attributeToOntologyUri.containsKey(attributeName) ? attributeToOntologyUri.get(attributeName) : null;
-//	}
-//
-//	public Property getAttrProperty(String attributeName)
-//	{
-//		return attributeProperty.containsKey(attributeName) ? attributeProperty.get(attributeName) : null;
-//	}
-//
-//	public String getIdentifierAttr()
-//	{
-//		return PARTICIPANT_ID;
-//	}
-// }
+
+import java.util.List;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.vocabulary.RDFS;
+import java.util.Arrays;
+
+public class SampleCollectionEntityMetadata implements MetaData {
+
+    public static final String COLLECTION_NAME = "collectionName";
+    public static final String START_DATE = "startDate";
+    public static final String STOP_DATE = "stopDate";
+    public static final String DATE_LAST_UPDATED = "datelastUpdated";
+    public static final String ORGANISATION = "organisation";
+    private static final String COORDINATOR = "sampleCoordinator";
+    private static final List<String> columns = Arrays.asList(COLLECTION_NAME,
+            START_DATE, STOP_DATE, DATE_LAST_UPDATED, ORGANISATION, COORDINATOR);
+    private final Map<String, String> attributeToOntologyUri;
+
+    {
+        attributeToOntologyUri = new HashMap<>();
+        attributeToOntologyUri.put(COLLECTION_NAME, RdfExporter.NCI_PREFIX);
+        attributeToOntologyUri.put(START_DATE, RdfExporter.OMIABIS_PREFIX);
+        attributeToOntologyUri.put(STOP_DATE, RdfExporter.OMIABIS_PREFIX);
+        attributeToOntologyUri.put(DATE_LAST_UPDATED, RdfExporter.OMIABIS_PREFIX);
+        attributeToOntologyUri.put(ORGANISATION, RdfExporter.ORGANIZATION_PREFIX);
+        attributeToOntologyUri.put(COORDINATOR, RdfExporter.COORDINATOR_PREFIX);
+    }
+
+    private final Map<String, Property> attributeProperty;
+
+    {
+        attributeProperty = new HashMap<>();
+        attributeProperty.put(COLLECTION_NAME, RDFS.seeAlso);
+        attributeProperty.put(START_DATE, OMIABIS.START_DATE);
+        attributeProperty.put(STOP_DATE, OMIABIS.STOP_DATE);
+        attributeProperty.put(DATE_LAST_UPDATED, OMIABIS.DATE_LAST_UPDATED);
+        attributeProperty.put(ORGANISATION, RDFS.seeAlso);
+        attributeProperty.put(COORDINATOR, OMIABIS.COORDINATOR);
+    }
+
+    private final Map<String, XSDDatatype> attrToDataType;
+
+    {
+        attrToDataType = new HashMap<>();
+        attrToDataType.put(COLLECTION_NAME, XSDDatatype.XSDstring);
+        attrToDataType.put(START_DATE, XSDDatatype.XSDdate);
+        attrToDataType.put(STOP_DATE, XSDDatatype.XSDdate);
+        attrToDataType.put(DATE_LAST_UPDATED, XSDDatatype.XSDdate);
+        attrToDataType.put(ORGANISATION, XSDDatatype.XSDstring);
+        attrToDataType.put(COORDINATOR, XSDDatatype.XSDstring);
+    }
+
+    @Override
+    public List<String> getAttributeNames() {
+        return columns;
+    }
+
+    @Override
+    public XSDDatatype getDataType(String attributeName) {
+
+        return attrToDataType.containsKey(attributeName) ? attrToDataType.get(attributeName) : XSDDatatype.XSDstring;
+    }
+
+    @Override
+    public String getOntologyPrefix(String attributeName) {
+        return attributeToOntologyUri.get(attributeName);
+    }
+
+    @Override
+    public Property getAttrProperty(String attributeName) {
+        return attributeProperty.get(attributeName);
+    }
+
+    @Override
+    public String getIdentifierAttr() {
+        return COLLECTION_NAME;
+    }
+}
