@@ -18,18 +18,20 @@ public class SampleCollectionEntityMetadata implements MetaData {
     public static final String DATE_LAST_UPDATED = "datelastUpdated";
     public static final String ORGANISATION = "organisation";
     private static final String COORDINATOR = "sampleCoordinator";
+    private static final String SAMPLE = "specimenID";
     private static final List<String> columns = Arrays.asList(COLLECTION_NAME,
-            START_DATE, STOP_DATE, DATE_LAST_UPDATED, ORGANISATION, COORDINATOR);
+            START_DATE, STOP_DATE, DATE_LAST_UPDATED, ORGANISATION, COORDINATOR, SAMPLE);
     private final Map<String, String> attributeToOntologyUri;
 
     {
         attributeToOntologyUri = new HashMap<>();
-        attributeToOntologyUri.put(COLLECTION_NAME, RdfExporter.NCI_PREFIX);
+        attributeToOntologyUri.put(COLLECTION_NAME, RdfExporter.SAMPLE_COLLECTIONS_PREFIX);
         attributeToOntologyUri.put(START_DATE, RdfExporter.OMIABIS_PREFIX);
         attributeToOntologyUri.put(STOP_DATE, RdfExporter.OMIABIS_PREFIX);
         attributeToOntologyUri.put(DATE_LAST_UPDATED, RdfExporter.OMIABIS_PREFIX);
-        attributeToOntologyUri.put(ORGANISATION, RdfExporter.ORGANIZATION_PREFIX);
+        attributeToOntologyUri.put(ORGANISATION, RdfExporter.ORGANISATION_PREFIX);
         attributeToOntologyUri.put(COORDINATOR, RdfExporter.COORDINATOR_PREFIX);
+        attributeToOntologyUri.put(SAMPLE, RdfExporter.SAMPLE_PREFIX);
     }
 
     private final Map<String, Property> attributeProperty;
@@ -42,6 +44,7 @@ public class SampleCollectionEntityMetadata implements MetaData {
         attributeProperty.put(DATE_LAST_UPDATED, OMIABIS.DATE_LAST_UPDATED);
         attributeProperty.put(ORGANISATION, RDFS.seeAlso);
         attributeProperty.put(COORDINATOR, OMIABIS.COORDINATOR);
+        attributeProperty.put(SAMPLE, OMIABIS.SAMPLE);
     }
 
     private final Map<String, XSDDatatype> attrToDataType;
@@ -52,8 +55,9 @@ public class SampleCollectionEntityMetadata implements MetaData {
         attrToDataType.put(START_DATE, XSDDatatype.XSDdate);
         attrToDataType.put(STOP_DATE, XSDDatatype.XSDdate);
         attrToDataType.put(DATE_LAST_UPDATED, XSDDatatype.XSDdate);
-        attrToDataType.put(ORGANISATION, XSDDatatype.XSDstring);
-        attrToDataType.put(COORDINATOR, XSDDatatype.XSDstring);
+        attrToDataType.put(ORGANISATION, XSDDatatype.XSDIDREF);
+        attrToDataType.put(COORDINATOR, XSDDatatype.XSDIDREF);
+        attrToDataType.put(SAMPLE, XSDDatatype.XSDIDREF);
     }
 
     @Override

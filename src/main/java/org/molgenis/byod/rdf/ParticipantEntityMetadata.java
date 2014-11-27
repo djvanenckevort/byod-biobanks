@@ -9,7 +9,6 @@ import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.DCTerms;
-import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class ParticipantEntityMetadata implements MetaData {
 
@@ -17,8 +16,10 @@ public class ParticipantEntityMetadata implements MetaData {
     public static final String DIAGNOSIS_CODE = "diagnosis_code";
     public static final String ETHNICITY = "ethnicity";
     public static final String GENDER = "gender";
+    public static final String SAMPLE_ID = "specimenID";
 
-    private static final List<String> columns = Arrays.asList(PARTICIPANT_ID, DIAGNOSIS_CODE, ETHNICITY, GENDER);
+    private static final List<String> columns = Arrays.asList(PARTICIPANT_ID,
+            DIAGNOSIS_CODE, ETHNICITY, GENDER, SAMPLE_ID);
 
     private final Map<String, String> attributeToOntologyUri;
 
@@ -26,15 +27,17 @@ public class ParticipantEntityMetadata implements MetaData {
         attributeToOntologyUri = new HashMap<>();
         attributeToOntologyUri.put(DIAGNOSIS_CODE, RdfExporter.NCI_PREFIX);
         attributeToOntologyUri.put(PARTICIPANT_ID, RdfExporter.CATALOG_PARTICIPANT_ID_PREFIX);
+        attributeToOntologyUri.put(SAMPLE_ID, RdfExporter.SAMPLE_PREFIX);
     }
 
     private final Map<String, Property> attributeProperty;
 
     {
         attributeProperty = new HashMap<>();
-        attributeProperty.put(DIAGNOSIS_CODE, RDFS.seeAlso);
+        attributeProperty.put(DIAGNOSIS_CODE, OMIABIS.DIAGNOSIS);
         attributeProperty.put(ETHNICITY, DCTerms.identifier);
         attributeProperty.put(GENDER, FOAF.gender);
+        attributeProperty.put(SAMPLE_ID, OMIABIS.SAMPLE);
     }
 
     private final Map<String, XSDDatatype> attrToDataType;
@@ -45,6 +48,7 @@ public class ParticipantEntityMetadata implements MetaData {
         attrToDataType.put(DIAGNOSIS_CODE, XSDDatatype.XSDstring);
         attrToDataType.put(ETHNICITY, XSDDatatype.XSDstring);
         attrToDataType.put(GENDER, XSDDatatype.XSDstring);
+        attrToDataType.put(SAMPLE_ID, XSDDatatype.XSDIDREF);
     }
 
     @Override

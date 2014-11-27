@@ -16,7 +16,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 public class RdfExporter {
 
     public final static String CATALOG_PARTICIPANT_ID_PREFIX = "http://ctmm-trait.nl/participants/";
-    public final static String ORGANIZATION_PREFIX = "http://ctmm-trait.nl/organisation/";
+    public final static String ORGANISATION_PREFIX = "http://ctmm-trait.nl/organisation/";
     public final static String COORDINATOR_PREFIX = "http://ctmm-trait.nl/samplecoordinator/";
     public final static String SAMPLE_PREFIX = "http://ctmm-trait.nl/sample/";
     public final static String SAMPLE_COLLECTIONS_PREFIX = "http://ctmm-trait.nl/samplecollections/";
@@ -31,7 +31,8 @@ public class RdfExporter {
         prefixMaps.put("sample", SAMPLE_PREFIX);
         prefixMaps.put("sample_collection", SAMPLE_COLLECTIONS_PREFIX);
         prefixMaps.put("miabis", OMIABIS_PREFIX);
-        prefixMaps.put("organization", ORGANIZATION_PREFIX);
+        prefixMaps.put("organisation", ORGANISATION_PREFIX);
+        prefixMaps.put("coordinator", COORDINATOR_PREFIX);
         prefixMaps.put("nci", NCI_PREFIX);
         prefixMaps.put("foaf", FOAF.getURI());
         prefixMaps.put("rdfs", RDFS.getURI());

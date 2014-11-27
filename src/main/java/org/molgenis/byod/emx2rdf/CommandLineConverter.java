@@ -64,8 +64,8 @@ public class CommandLineConverter implements CommandLineRunner {
         while (reader.hasNext()) {
             Map<String, String> entity = reader.next();
             participants.add(rdfExporter.convert(entity, new ParticipantEntityMetadata()));
-            collections.add(rdfExporter.convert(entity, new SampleEntityMetadata()));
-            model.add(rdfExporter.convert(entity, new SampleCollectionEntityMetadata()));
+            model.add(rdfExporter.convert(entity, new SampleEntityMetadata()));
+            collections.add(rdfExporter.convert(entity, new SampleCollectionEntityMetadata()));
         }
         participants.forEach(p -> model.add(p));
         collections.forEach(c -> model.add(c));

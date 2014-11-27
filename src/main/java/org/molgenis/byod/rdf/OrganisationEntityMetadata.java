@@ -31,7 +31,7 @@ public class OrganisationEntityMetadata implements MetaData {
 
     {
         attributeToOntologyUri = new HashMap<>();
-        attributeToOntologyUri.put(ORGANISATION_ID, RdfExporter.ORGANIZATION_PREFIX);
+        attributeToOntologyUri.put(ORGANISATION_ID, RdfExporter.ORGANISATION_PREFIX);
     }
     private final Map<String, Property> attributeProperty;
 
