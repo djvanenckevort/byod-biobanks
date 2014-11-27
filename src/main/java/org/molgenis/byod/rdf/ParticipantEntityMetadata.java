@@ -7,8 +7,8 @@ import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
-import com.hp.hpl.jena.vocabulary.DCTerms;
 
 public class ParticipantEntityMetadata implements MetaData {
 
@@ -35,7 +35,7 @@ public class ParticipantEntityMetadata implements MetaData {
     {
         attributeProperty = new HashMap<>();
         attributeProperty.put(DIAGNOSIS_CODE, OMIABIS.DIAGNOSIS);
-        attributeProperty.put(ETHNICITY, DCTerms.identifier);
+        attributeProperty.put(ETHNICITY, OMIABIS.ETHNICITY);
         attributeProperty.put(GENDER, FOAF.gender);
         attributeProperty.put(SAMPLE_ID, OMIABIS.SAMPLE);
     }
@@ -74,5 +74,10 @@ public class ParticipantEntityMetadata implements MetaData {
     @Override
     public List<String> getAttributeNames() {
         return columns;
+    }
+
+    @Override
+    public Resource getResourceClass() {
+        return FOAF.Person;
     }
 }

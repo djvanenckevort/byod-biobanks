@@ -11,6 +11,7 @@ import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.DCTerms;
+import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class RdfExporter {
@@ -42,10 +43,13 @@ public class RdfExporter {
     public List<Statement> convert(Map<String, String> entity, MetaData metaData) {
         List<Statement> statements = new ArrayList<>();
         String identifierAttr = metaData.getIdentifierAttr();
-        Resource resource = ResourceFactory.createResource(createUri(metaData.getOntologyPrefix(identifierAttr), entity
-                .get(identifierAttr)));
+        String uri = createUri(metaData.getOntologyPrefix(identifierAttr), entity.get(identifierAttr));
+        Resource resource = ResourceFactory.createResource(uri);
         for (String attr : entity.keySet()) {
-            if (!attr.equals(identifierAttr) && metaData.getAttributeNames().contains(attr)) {
+            if (attr.equals(identifierAttr)) {
+                Resource object = metaData.getResourceClass();
+                statements.add(ResourceFactory.createStatement(resource, RDF.type, object));
+            } else if (metaData.getAttributeNames().contains(attr)) {
                 String valueGroup = entity.get(attr);
                 for (String value : valueGroup.split(DEFAULT_SEPARATOR)) {
                     RDFNode node;

@@ -7,7 +7,8 @@ import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 public class SampleEntityMetadata implements MetaData {
 
@@ -39,14 +40,14 @@ public class SampleEntityMetadata implements MetaData {
 
     {
         attributeProperty = new HashMap<>();
-        attributeProperty.put(SAMPLE_TYPE_CODE, RDFS.seeAlso);
-        attributeProperty.put(ANATOMIC_SOURCE_CODE, RDFS.seeAlso);
-        attributeProperty.put(LONG_TERM_STROAGE_CONTAINER, RDFS.seeAlso);
-        attributeProperty.put(STORAGE_TEMPERATURE, RDFS.seeAlso);
-        attributeProperty.put(PRESERVATION_TYPE_CODE, RDFS.seeAlso);
-        attributeProperty.put(PARTICIPANT_AGE_UNIT, RDFS.seeAlso);
-        attributeProperty.put(PARTICIPANT_AGE, RDFS.seeAlso);
-        attributeProperty.put(SPECIMEN_COUNT, RDFS.seeAlso);
+        attributeProperty.put(SAMPLE_TYPE_CODE, RDF.type);
+        attributeProperty.put(ANATOMIC_SOURCE_CODE, OMIABIS.ANATOMIC_SOURCE);
+        attributeProperty.put(LONG_TERM_STROAGE_CONTAINER, OMIABIS.LONG_TERM_STORAGE);
+        attributeProperty.put(STORAGE_TEMPERATURE, OMIABIS.STORAGE_TEMPERATURE);
+        attributeProperty.put(PRESERVATION_TYPE_CODE, OMIABIS.PRESERVATION_TYPE);
+        attributeProperty.put(PARTICIPANT_AGE_UNIT, OMIABIS.AGE_UNIT);
+        attributeProperty.put(PARTICIPANT_AGE, OMIABIS.AGE_AT_SAMPLING);
+        attributeProperty.put(SPECIMEN_COUNT, OMIABIS.SPECIMEN_COUNT);
     }
 
     private final Map<String, XSDDatatype> attrToDataType;
@@ -89,4 +90,10 @@ public class SampleEntityMetadata implements MetaData {
     public List<String> getAttributeNames() {
         return columns;
     }
+
+        @Override
+    public Resource getResourceClass() {
+        return OMIABIS.SAMPLE;
+    }
+
 }

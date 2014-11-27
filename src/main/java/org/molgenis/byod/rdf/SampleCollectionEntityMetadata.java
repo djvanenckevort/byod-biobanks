@@ -7,7 +7,9 @@ import java.util.Map;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.vocabulary.FOAF;
+import com.hp.hpl.jena.vocabulary.VCARD;
 import java.util.Arrays;
 
 public class SampleCollectionEntityMetadata implements MetaData {
@@ -38,11 +40,11 @@ public class SampleCollectionEntityMetadata implements MetaData {
 
     {
         attributeProperty = new HashMap<>();
-        attributeProperty.put(COLLECTION_NAME, RDFS.seeAlso);
+        attributeProperty.put(COLLECTION_NAME, FOAF.name);
         attributeProperty.put(START_DATE, OMIABIS.START_DATE);
         attributeProperty.put(STOP_DATE, OMIABIS.STOP_DATE);
         attributeProperty.put(DATE_LAST_UPDATED, OMIABIS.DATE_LAST_UPDATED);
-        attributeProperty.put(ORGANISATION, RDFS.seeAlso);
+        attributeProperty.put(ORGANISATION, VCARD.ORG);
         attributeProperty.put(COORDINATOR, OMIABIS.COORDINATOR);
         attributeProperty.put(SAMPLE, OMIABIS.SAMPLE);
     }
@@ -84,5 +86,10 @@ public class SampleCollectionEntityMetadata implements MetaData {
     @Override
     public String getIdentifierAttr() {
         return COLLECTION_NAME;
+    }
+
+    @Override
+    public Resource getResourceClass() {
+        return OMIABIS.SAMPLE_COLLECTION;
     }
 }

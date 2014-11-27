@@ -7,9 +7,9 @@ package org.molgenis.byod.rdf;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.DC;
-import com.hp.hpl.jena.vocabulary.RDFS;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ public class OrganisationEntityMetadata implements MetaData {
     {
         attributeProperty = new HashMap<>();
         attributeProperty.put(HOMEPAGE_URL, FOAF.homepage);
-        attributeProperty.put(ORGANISATION_NAME, RDFS.seeAlso);
+        attributeProperty.put(ORGANISATION_NAME, FOAF.name);
         attributeProperty.put(ORGANISATION_ID, DC.identifier);
     }
     private final Map<String, XSDDatatype> attrToDataType;
@@ -76,4 +76,7 @@ public class OrganisationEntityMetadata implements MetaData {
         return ORGANISATION_ID;
     }
 
+    public Resource getResourceClass() {
+        return FOAF.Organization;
+    }
 }

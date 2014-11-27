@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 public interface MetaData
 {
@@ -16,4 +17,6 @@ public interface MetaData
 	Property getAttrProperty(String attributeName);
 
 	XSDDatatype getDataType(String attributeName);
+
+        Resource getResourceClass();
 }
